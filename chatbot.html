@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Chatbot</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f0f0f0;
+        }
+        .chat-container {
+            width: 500px;
+            max-width: 100%;
+            background-color: #fff;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+            overflow: hidden;
+            position: relative;
+        }
+        .chat-header, .chat-footer {
+            padding: 10px;
+            background-color: #007bff;
+            color: #fff;
+        }
+        .chat-messages {
+            padding: 20px;
+            max-height: 400px;
+            overflow-y: auto;
+            background-color: #e9e9e9;
+        }
+        .chat-bubble {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        .chat-bubble.bot {
+            justify-content: flex-start;
+        }
+        .chat-bubble.user {
+            justify-content: flex-end;
+        }
+        .chat-bubble p {
+            margin: 0;
+            padding: 10px;
+            background-color: #fff;
+            border-radius: 10px;
+            max-width: 70%;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        .chat-bubble.bot p {
+            background-color: #d1ecf1;
+        }
+        .chat-bubble.user p {
+            background-color: #b8daff;
+        }
+        .chat-bubble img {
+            width: 70px;
+            height: 70px;
+            margin-right: 10px;
+        }
+        .chat-footer {
+            display: flex;
+            align-items: center;
+            background-color: #fff;
+            padding: 10px;
+        }
+        .chat-footer input[type="text"] {
+            flex: 1;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 20px;
+            margin-right: 10px;
+        }
+        .chat-footer button {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 20px;
+            background-color: #007bff;
+            color: #fff;
+            cursor: pointer;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        .chat-footer button:hover {
+            background-color: #0056b3;
+        }
+        .predict-button {
+            width: 100%;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 20px;
+            background-color: #007bff;
+            color: #fff;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+        .predict-button:hover {
+            background-color: #218838;
+        }
+    </style>
+</head>
+<body>
+    <div class="chat-container">
+        <div class="chat-header">
+            <h3>Disaster Blaster - Predicting Perils with a Punch!</h3>
+        </div>
+        <div class="chat-messages" id="chat-messages">
+            <div class="chat-bubble bot">
+                <img src="bot-icon.png" alt="Bot">
+                <p>Hey there!!!! My name is Disaster Blaster🤖. I’m here to help you today for anything you would want me to help. How can I assist you today?</p>
+            </div>
+        </div>
+        <div class="chat-footer">
+            <input type="text" id="user-input" placeholder="Type a message...">
+            <button class="sendbtn" onclick="sendMessage()">Send</button>
+        </div>
+        <button class="predict-button" onclick="location.href='http://localhost:8501';">Predict Disaster</button>
+    </div>
+
+    <script>
+        function sendMessage() {
+            const userInput = document.getElementById('user-input').value;
+            const chatMessages = document.getElementById('chat-messages');
+
+            console.log("User input captured: ", userInput); // Debugging statement
+
+            if (userInput.trim() !== "") {
+                // User message
+                const userBubble = document.createElement('div');
+                userBubble.className = 'chat-bubble user';
+                userBubble.innerHTML = `<p>${userInput}</p>`;
+                chatMessages.appendChild(userBubble);
+
+                // Scroll to the bottom
+                chatMessages.scrollTop = chatMessages.scrollHeight;
+
+                // Bot response
+                setTimeout(() => {
+                    const botBubble = document.createElement('div');
+                    botBubble.className = 'chat-bubble bot';
+                    botBubble.innerHTML = `<img src="bot-icon.png" alt="Bot"><p>${getBotResponse(userInput)}</p>`;
+                    chatMessages.appendChild(botBubble);
+
+                    // Scroll to the bottom
+                    chatMessages.scrollTop = chatMessages.scrollHeight;
+                }, 1000);
+
+                // Clear input
+                document.getElementById('user-input').value = "";
+            }
+        }
+
+        function getBotResponse(message) {
+            const msg = message.trim().toLowerCase();
+            console.log("Processed user message: ", msg); // Debugging statement
+            if (msg.includes("drought")) {
+                return "As per the data available to me, there's no possible drought.If you want to check by yourself you can click on the predict disaster button";
+            } else if (msg.includes("earthquake")) {
+                return "As per the data available to me, there's no possible earthquake.If you want to check by yourself you can click on the predict disaster button";
+            } else if (msg.includes("flood")) {
+                return "As per the data available to me, there's no possible flood.If you want to check by yourself you can click on the predict disaster button";
+            } else {
+                return "I'm sorry, I don't understand your question. Can you please specify if you are asking about drought, earthquake, or flood?";
+            }
+        }
+    </script>
+</body>
+</html>
